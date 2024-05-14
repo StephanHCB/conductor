@@ -49,7 +49,7 @@ jobs:
       - name: Docker build and push image
         run: >
           cd app &&
-          TAG_ARGS=$(echo -n "$IMAGE_TAGS" | sed -r "s_([^ :/]+)_ --tag $REGISTRY/$IMAGE_NAME:\1 _g") &&
+          TAG_ARGS=$(echo -n "$IMAGE_TAGS" | sed -r "s_([^ :/]+)_ --tag $REGISTRY/${IMAGE_NAME,,}:\1 _g") &&
           docker build 
           --label org.opencontainers.image.url="$FULL_REPO_URL"
           --label org.opencontainers.image.revision="$COMMIT_HASH"
@@ -57,7 +57,7 @@ jobs:
           --pull
           -f docker/server/Dockerfile
           . &&
-          docker push -a "$REGISTRY/$IMAGE_NAME"
+          docker push -a "$REGISTRY/${IMAGE_NAME,,}"
         shell: bash
         env:
           REGISTRY: ghcr.io
